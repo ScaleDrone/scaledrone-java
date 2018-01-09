@@ -13,18 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-interface Listener {
-    void onOpen();
-    void onOpenFailure(Exception ex);
-    void onFailure(Exception ex);
-    void onClosed(String reason);
-}
-
-interface AuthenticationListener {
-    void onAuthentication();
-    void onAuthenticationFailure(Exception ex);
-}
-
 interface CallbackHandler {
     void handleCallback(GenericCallback cb);
     void handleError(Exception ex);
