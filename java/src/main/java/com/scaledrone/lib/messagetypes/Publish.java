@@ -1,4 +1,4 @@
-package com.scaledrone.messagetypes;
+package com.scaledrone.lib.messagetypes;
 
 public class Publish {
     public final String type = "publish";

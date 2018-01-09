@@ -1,4 +1,4 @@
-package com.scaledrone.messagetypes;
+package com.scaledrone.lib.messagetypes;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

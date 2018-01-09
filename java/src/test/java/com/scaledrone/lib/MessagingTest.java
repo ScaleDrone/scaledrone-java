@@ -1,4 +1,4 @@
-package com.scaledrone;
+package com.scaledrone.lib;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -58,7 +58,7 @@ public class MessagingTest {
     @Test
     public void objectMessage() throws Exception {
         final Waiter waiter = new Waiter();
-        Data data = new Data("bob", "red");
+        final Data data = new Data("bob", "red");
         final Scaledrone drone = new Scaledrone(channel);
         drone.connect(new Listener() {
             @Override

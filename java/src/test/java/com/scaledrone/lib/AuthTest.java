@@ -1,4 +1,4 @@
-package com.scaledrone;
+package com.scaledrone.lib;
 
 import com.auth0.jwt.JWTSigner;
 import com.fasterxml.jackson.databind.JsonNode;

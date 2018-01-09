@@ -1,22 +1,17 @@
-package com.scaledrone;
+package com.scaledrone.lib;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.scaledrone.messagetypes.*;
+import com.scaledrone.lib.messagetypes.*;
+import com.scaledrone.lib.messagetypes.Handshake;
+import okhttp3.*;
+import okio.ByteString;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
 
 interface Listener {
     void onOpen();

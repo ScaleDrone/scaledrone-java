@@ -1,4 +1,4 @@
-package com.scaledrone;
+package com.scaledrone.lib;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,7 +36,7 @@ public class ObservableRoomsTest {
             }
         };
 
-        Data data = new Data("Android", "#ff0000");
+        final Data data = new Data("Android", "#ff0000");
         connectNewScaledroneInstance(data, waiter, new ObservableRoomListener() {
             @Override
             public void onMembers(Room room, ArrayList<Member> members) {
@@ -84,7 +84,7 @@ public class ObservableRoomsTest {
         waiter.await(10000, 3);
     }
 
-    private Scaledrone connectNewScaledroneInstance(Data data, Waiter waiter, ObservableRoomListener listener) {
+    private Scaledrone connectNewScaledroneInstance(Data data, final Waiter waiter, final ObservableRoomListener listener) {
         final Scaledrone drone = new Scaledrone(channel, data);
         waiter.assertEquals(null, drone.getClientID());
         drone.connect(new Listener() {

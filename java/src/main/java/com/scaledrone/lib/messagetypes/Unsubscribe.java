@@ -1,4 +1,4 @@
-package com.scaledrone.messagetypes;
+package com.scaledrone.lib.messagetypes;
 
 public class Unsubscribe {
     public final String type = "unsubscribe";

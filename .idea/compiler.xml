@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="com.scaledrone_main" target="1.8" />
       <module name="com.scaledrone_test" target="1.8" />
+      <module name="java_main" target="1.7" />
+      <module name="java_test" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,0 +1,82 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+def groupId = "com.scaledrone"
+def artifactId = "scaledrone-java"
+def localReleaseDest = "${buildDir}/release/${version}"
+
+uploadArchives {
+    repositories.mavenDeployer {
+        pom.groupId = groupId
+        pom.artifactId = artifactId
+        pom.version = version
+
+        // Add other pom properties here if you want (developer details / licenses)
+        pom.project {
+            name 'Scaledrone Java client library'
+            description 'A Java client library for Scaledrone realtime messaging service and platform.'
+            packaging 'jar'
+            inceptionYear '2018'
+            scm {
+                url 'scm:git:https://github.com/ScaleDrone/scaledrone-java'
+                connection 'scm:git:https://github.com/ScaleDrone/scaledrone-java'
+                developerConnection 'scm:git@github.com:ScaleDrone/scaledrone-java.git'
+            }
+            organization {
+                name 'Scaledrone'
+                url 'https://www.scaledrone.com/'
+            }
+            issueManagement {
+                system 'Github'
+                url 'https://github.com/ScaleDrone/scaledrone-java/issues'
+            }
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'https://raw.githubusercontent.com/ScaleDrone/scaledrone-java/master/LICENSE.md'
+                    distribution 'repo'
+                }
+            }
+        }
+
+        // Exclude test dependencies
+        pom.whenConfigured {
+            p -> p.dependencies = p.dependencies.findAll {
+                dep -> dep.scope == 'compile'
+            }
+        }
+
+        // Export files to local storage
+        repository(url: "file://${localReleaseDest}")
+    }
+}
+
+task zipRelease(type: Zip) {
+    from localReleaseDest
+    destinationDir buildDir
+    archiveName "release-${version}.zip"
+}
+
+task assembleRelease << {
+    println "Release ${version} can be found at ${localReleaseDest}/"
+    println "Release ${version} zipped can be found ${buildDir}/release-${version}.zip"
+}
+
+assembleRelease.dependsOn(uploadArchives)
+assembleRelease.dependsOn(zipRelease)
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}

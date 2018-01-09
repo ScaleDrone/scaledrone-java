@@ -1,0 +1,87 @@
+plugins {
+    id 'de.fuerstenau.buildconfig' version '1.1.7'
+}
+
+apply plugin: 'java'
+apply from: 'maven.gradle'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+apply from: '../dependencies.gradle'
+
+buildConfig {
+    packageName 'com.scaledrone.lib'
+    clsName 'BuildConfig'
+    buildConfigField 'String', 'LIBRARY_NAME', 'java'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', '../lib/src/main/java']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java', '../lib/src/test/java']
+        }
+    }
+}
+
+// Default jar: add com.scaledrone classes from :lib dependency.
+jar {
+    baseName = 'scaledrone-java'
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    includes = ['**/com/scaledrone/**']
+    includeEmptyDirs false
+    exclude 'META-INF/**'
+}
+
+// fullJar: add all classes from dependencies transitively.
+task fullJar(type: Jar) {
+    baseName = 'scaledrone-java'
+    classifier = 'full'
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    with jar
+    exclude 'META-INF/**'
+}
+
+assemble.dependsOn fullJar
+
+configurations {
+    fullConfiguration
+    testsConfiguration
+}
+
+artifacts {
+    fullConfiguration fullJar
+}
+
+task testRealtimeSuite(type: Test) {
+    filter {
+        includeTestsMatching "*RealtimeSuite"
+    }
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+    outputs.upToDateWhen { false }
+}
+
+task testRestSuite(type: Test) {
+    filter {
+        includeTestsMatching "*RestSuite"
+    }
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+    outputs.upToDateWhen { false }
+}

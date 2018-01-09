@@ -1,4 +1,4 @@
-package com.scaledrone;
+package com.scaledrone.lib;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
