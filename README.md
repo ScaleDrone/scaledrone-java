@@ -1,4 +1,4 @@
-![travis master branch build status](https://travis-ci.org/ScaleDrone/scaledrone-java.svg?branch=master)
+[![travis master branch build status](https://travis-ci.org/ScaleDrone/scaledrone-java.svg?branch=master)](https://travis-ci.org/ScaleDrone/scaledrone-java)
 
 # Scaledrone Java/Android WebSocket client
 
