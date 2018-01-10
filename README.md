@@ -35,7 +35,16 @@ repositories {
 compile 'com.scaledrone:scaledrone-java:0.2.3'
 ```
 
+## Android
+
+If you are using this library on Android make sure you add the [INTERNET](https://developer.android.com/training/basics/network-ops/connecting.html) permission to the manifest file.
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
 ## Getting started
+
+### Basic example
 
 ```java
 final Scaledrone drone = new Scaledrone("CHANNEL_ID_FROM_DASHBOARD");
