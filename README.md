@@ -8,10 +8,32 @@ This project goes hand to hand with [Scaledrone documentation](https://www.scale
 
 ## Installation
 
-### Gradle
-_TODO_
+[ ![Download](https://api.bintray.com/packages/scaledrone/scaledrone/scaledrone-java/images/download.svg) ](https://bintray.com/scaledrone/scaledrone/scaledrone-java/_latestVersion)
+
+The library is hosted on the [Jcenter repository](https://bintray.com/ably-io/ably), so you need to ensure that the repo is referenced also; IDEs will typically include this by default:
+
+```
+repositories {
+	jcenter()
+}
+```
+
 ### Maven
-_TODO_
+
+```xml
+<dependency>
+  <groupId>com.scaledrone</groupId>
+  <artifactId>scaledrone-java</artifactId>
+  <version>0.2.3</version>
+  <type>pom</type>
+</dependency>
+```
+
+### Gradle
+
+```
+compile 'com.scaledrone:scaledrone-java:0.2.3'
+```
 
 ## Getting started
 
@@ -175,3 +197,13 @@ drone.connect(new Listener() {
         });
     }
 ```
+
+## Publishing a new version to JCenter
+
+* Update the version 1.2.3 in `build.gradle`
+* Run `./gradlew java:assembleRelease` to generate the new release files
+* Go to https://bintray.com/scaledrone/scaledrone/scaledrone-java and create a new version
+* Type in `com/scaledrone/scaledrone-java/1.2.3` into "Target Repository Path" ensuring the correct version is included.
+* Upload all the files from `java/build/release/1.2.3/`
+* You will see a notice "You have 8 unpublished item(s) for this version", click "Publish". It might take a few minutes
+* Update the README with the correct version
