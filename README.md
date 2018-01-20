@@ -24,7 +24,7 @@ repositories {
 <dependency>
   <groupId>com.scaledrone</groupId>
   <artifactId>scaledrone-java</artifactId>
-  <version>0.2.3</version>
+  <version>0.3.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -32,7 +32,7 @@ repositories {
 ### Gradle
 
 ```
-compile 'com.scaledrone:scaledrone-java:0.2.3'
+compile 'com.scaledrone:scaledrone-java:0.3.0'
 ```
 
 ## Android
@@ -64,7 +64,7 @@ drone.connect(new Listener() {
             }
 
             @Override
-            public void onMessage(Room room, JsonNode message) {
+            public void onMessage(Room room, JsonNode message, Member member) {
                 System.out.println("Message: " + message.asText());
             }
         });
@@ -107,7 +107,7 @@ A received message is of type `JsonNode`. Jackson `JsonNode` can easily be trans
 ```java
 drone.subscribe("myroom", new RoomListener() {
     @Override
-    public void onMessage(Room room, JsonNode message) {
+    public void onMessage(Room room, JsonNode message, Member member) {
         // parse as string
         System.out.println("Message: " + message.asText());
 
@@ -205,6 +205,18 @@ drone.connect(new Listener() {
             });
         });
     }
+```
+
+## Checking if the messages was sent by the user itself
+
+```java
+// inside a room listener
+@Override
+public void onMessage(Room room, JsonNode message, Member member) {
+    if (member.getClientID() == scaledrone.getClientID) {
+        // message is sent by session user
+    }
+}
 ```
 
 ## Publishing a new version to JCenter

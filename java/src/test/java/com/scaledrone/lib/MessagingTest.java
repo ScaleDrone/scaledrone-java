@@ -17,7 +17,7 @@ public class MessagingTest {
         drone.connect(new Listener() {
             @Override
             public void onOpen() {
-                drone.subscribe("observable-room1", new RoomListener() {
+                drone.subscribe("room1", new RoomListener() {
                     @Override
                     public void onOpen(Room room) {
                         room.publish("Hello there");
@@ -29,8 +29,9 @@ public class MessagingTest {
                     }
 
                     @Override
-                    public void onMessage(Room room, JsonNode message) {
+                    public void onMessage(Room room, JsonNode message, Member member) {
                         waiter.assertEquals("Hello there", message.asText());
+                        waiter.assertEquals(drone.getClientID(), member.getId());
                         waiter.resume();
                     }
                 });
@@ -63,7 +64,7 @@ public class MessagingTest {
         drone.connect(new Listener() {
             @Override
             public void onOpen() {
-                drone.subscribe("room1", new RoomListener() {
+                drone.subscribe("room2", new RoomListener() {
                     @Override
                     public void onOpen(Room room) {
                         room.publish(data);
@@ -75,7 +76,7 @@ public class MessagingTest {
                     }
 
                     @Override
-                    public void onMessage(Room room, JsonNode message) {
+                    public void onMessage(Room room, JsonNode message, Member member) {
                         ObjectMapper mapper = new ObjectMapper();
                         try {
                             waiter.assertEquals(data, mapper.treeToValue(message, Data.class));

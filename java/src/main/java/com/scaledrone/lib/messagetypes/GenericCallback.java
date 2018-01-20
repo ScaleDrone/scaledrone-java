@@ -44,4 +44,17 @@ public class GenericCallback {
     public JsonNode getData() {
         return data;
     }
+
+    @Override
+    public String toString() {
+        return "GenericCallback{" +
+                "type='" + type + '\'' +
+                ", callback=" + callback +
+                ", error='" + error + '\'' +
+                ", clientID='" + clientID + '\'' +
+                ", room='" + room + '\'' +
+                ", message=" + message +
+                ", data=" + data +
+                '}';
+    }
 }

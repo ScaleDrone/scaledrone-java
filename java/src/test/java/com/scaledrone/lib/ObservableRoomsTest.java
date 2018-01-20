@@ -15,7 +15,61 @@ public class ObservableRoomsTest {
     final String channel = System.getenv("AUTHLESS_CHANNEL");
 
     @Test
-    public void test() throws Exception {
+    public void testPublish() throws Exception {
+        final Waiter waiter = new Waiter();
+
+        final Data data = new Data("Android", "#ff0000");
+        final Scaledrone drone = new Scaledrone(channel, data);
+        drone.connect(new Listener() {
+            @Override
+            public void onOpen() {
+                drone.subscribe("observable-room1", new RoomListener() {
+                    @Override
+                    public void onOpen(Room room) {
+                        drone.publish("observable-room1", data);
+                    }
+
+                    @Override
+                    public void onOpenFailure(Room room, Exception ex) {
+
+                    }
+
+                    @Override
+                    public void onMessage(Room room, JsonNode message, Member member) {
+                        waiter.assertEquals(drone.getClientID(), member.getId());
+                        ObjectMapper mapper = new ObjectMapper();
+                        try {
+                            Data d = mapper.treeToValue(member.getClientData(), Data.class);
+                            waiter.assertEquals(data, d);
+                            waiter.resume();
+                        } catch (JsonProcessingException e) {
+                            waiter.fail(e);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onOpenFailure(Exception ex) {
+
+            }
+
+            @Override
+            public void onFailure(Exception ex) {
+
+            }
+
+            @Override
+            public void onClosed(String reason) {
+
+            }
+        });
+
+        waiter.await(10000, 1);
+    }
+
+    @Test
+    public void testEvents() throws Exception {
         final Waiter waiter = new Waiter();
 
         final ObservableRoomListener silentListener = new ObservableRoomListener() {
@@ -91,7 +145,7 @@ public class ObservableRoomsTest {
             @Override
             public void onOpen() {
                 waiter.assertNotNull(drone.getClientID());
-                Room room = drone.subscribe("observable-room", new RoomListener() {
+                Room room = drone.subscribe("observable-room2", new RoomListener() {
                     @Override
                     public void onOpen(Room room) {
 
@@ -103,7 +157,7 @@ public class ObservableRoomsTest {
                     }
 
                     @Override
-                    public void onMessage(Room room, JsonNode message) {
+                    public void onMessage(Room room, JsonNode message, Member member) {
 
                     }
                 });
