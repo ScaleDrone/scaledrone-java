@@ -29,8 +29,9 @@ public class MessagingTest {
                     }
 
                     @Override
-                    public void onMessage(Room room, JsonNode message) {
+                    public void onMessage(Room room, JsonNode message, Member member) {
                         waiter.assertEquals("Hello there", message.asText());
+                        waiter.assertEquals(drone.getClientID(), member.getId());
                         waiter.resume();
                     }
                 });
@@ -75,7 +76,7 @@ public class MessagingTest {
                     }
 
                     @Override
-                    public void onMessage(Room room, JsonNode message) {
+                    public void onMessage(Room room, JsonNode message, Member member) {
                         ObjectMapper mapper = new ObjectMapper();
                         try {
                             waiter.assertEquals(data, mapper.treeToValue(message, Data.class));

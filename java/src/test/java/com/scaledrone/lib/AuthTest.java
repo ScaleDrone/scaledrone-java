@@ -51,7 +51,7 @@ public class AuthTest {
                     }
 
                     @Override
-                    public void onMessage(Room room, JsonNode message) {
+                    public void onMessage(Room room, JsonNode message, Member member) {
                         waiter.fail();
                     }
                 });
