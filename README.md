@@ -228,3 +228,7 @@ public void onMessage(Room room, JsonNode message, Member member) {
 * Upload all the files from `java/build/release/1.2.3/`
 * You will see a notice "You have 8 unpublished item(s) for this version", click "Publish". It might take a few minutes
 * Update the README with the correct version
+
+## Changelog
+
+* `0.3.0` - Add `member` parameter to `onMessage` listener method.
