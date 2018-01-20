@@ -93,16 +93,17 @@ public class Scaledrone extends WebSocketListener {
                 this.listener.onFailure(new Exception(cb.getError()));
             } else {
                 final Room room = this.roomsMap.get(cb.getRoom());
-                final Member member;
+                Member member;
                 switch (cb.getType()) {
                     case "publish":
                         member = room.getMembers().get(cb.getClientID());
+                        if (member == null) {
+                            member = new Member();
+                            member.setId(cb.getClientID());
+                        }
                         room.getListener().onMessage(room, cb.getMessage(), member);
                         break;
                     case "observable_members":
-                        if (room.getObservableListener() == null) {
-                            break;
-                        }
                         ArrayList<Member> members = mapper.readValue(
                                 mapper.treeAsTokens(cb.getData()),
                                 mapper.getTypeFactory().constructType(new TypeReference<ArrayList<Member>>(){})
@@ -110,23 +111,23 @@ public class Scaledrone extends WebSocketListener {
                         for (Member m : members) {
                             room.getMembers().put(m.getId(), m);
                         }
-                        room.getObservableListener().onMembers(room, members);
+                        if (room.getObservableListener() != null) {
+                            room.getObservableListener().onMembers(room, members);
+                        }
                         break;
                     case "observable_member_join":
-                        if (room.getObservableListener() == null) {
-                            break;
-                        }
                         member = mapper.treeToValue(cb.getData(), Member.class);
                         room.getMembers().put(member.getId(), member);
-                        room.getObservableListener().onMemberJoin(room, member);
+                        if (room.getObservableListener() != null) {
+                            room.getObservableListener().onMemberJoin(room, member);
+                        }
                         break;
                     case "observable_member_leave":
-                        if (room.getObservableListener() == null) {
-                            break;
-                        }
                         member = mapper.treeToValue(cb.getData(), Member.class);
                         room.getMembers().remove(member.getId());
-                        room.getObservableListener().onMemberLeave(room, member);
+                        if (room.getObservableListener() != null) {
+                            room.getObservableListener().onMemberLeave(room, member);
+                        }
                         break;
                 }
             }

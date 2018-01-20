@@ -17,7 +17,7 @@ public class MessagingTest {
         drone.connect(new Listener() {
             @Override
             public void onOpen() {
-                drone.subscribe("observable-room1", new RoomListener() {
+                drone.subscribe("room1", new RoomListener() {
                     @Override
                     public void onOpen(Room room) {
                         room.publish("Hello there");
@@ -64,7 +64,7 @@ public class MessagingTest {
         drone.connect(new Listener() {
             @Override
             public void onOpen() {
-                drone.subscribe("room1", new RoomListener() {
+                drone.subscribe("room2", new RoomListener() {
                     @Override
                     public void onOpen(Room room) {
                         room.publish(data);

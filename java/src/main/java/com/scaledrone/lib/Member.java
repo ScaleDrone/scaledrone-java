@@ -22,6 +22,10 @@ public class Member {
         return clientData;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "Member{" +
