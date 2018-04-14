@@ -204,7 +204,8 @@ public class Scaledrone extends WebSocketListener {
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        System.out.println("Failure: " + t.getMessage());
+        System.out.println("Connection failed: " + response);
+        this.listener.onFailure(new Exception(t));
     }
 
     public void setUrl(String url) {
