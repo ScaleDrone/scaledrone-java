@@ -224,8 +224,9 @@ public void onMessage(Room room, JsonNode message, Member member) {
 * Update the version 1.2.3 in `build.gradle`
 * Run `./gradlew java:assembleRelease` to generate the new release files
 * Go to https://bintray.com/scaledrone/scaledrone/scaledrone-java and create a new version
+* Click "Upload Files"
 * Type in `com/scaledrone/scaledrone-java/1.2.3` into "Target Repository Path" ensuring the correct version is included.
-* Upload all the files from `java/build/release/1.2.3/`
+* Upload all the files from `java/build/release/1.2.3/com/scaledrone/scaledrone-java/1.2.3`
 * You will see a notice "You have 8 unpublished item(s) for this version", click "Publish". It might take a few minutes
 * Update the README with the correct version
 
