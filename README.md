@@ -24,7 +24,7 @@ repositories {
 <dependency>
   <groupId>com.scaledrone</groupId>
   <artifactId>scaledrone-java</artifactId>
-  <version>0.3.0</version>
+  <version>0.4.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -32,7 +32,7 @@ repositories {
 ### Gradle
 
 ```
-compile 'com.scaledrone:scaledrone-java:0.3.0'
+compile 'com.scaledrone:scaledrone-java:0.4.0'
 ```
 
 ## Android
@@ -232,4 +232,5 @@ public void onMessage(Room room, JsonNode message, Member member) {
 
 ## Changelog
 
+* `0.4.0` - Hooked up `onFailure` listener. This can be used for reconnecting.
 * `0.3.0` - Add `member` parameter to `onMessage` listener method.
