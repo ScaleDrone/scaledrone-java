@@ -219,6 +219,12 @@ public void onMessage(Room room, JsonNode message, Member member) {
 }
 ```
 
+## Troubleshooting
+```
+PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+```
+This likely means that your Java doesn't support Let's Encrypt Certificates. Upgrade Java7 to 7u111 or newer or Java 8 to 8u101 or newer. [Read more..](https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903)
+
 ## Publishing a new version to JCenter
 
 * Update the version 1.2.3 in `build.gradle`
