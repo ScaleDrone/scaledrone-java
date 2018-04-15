@@ -219,6 +219,33 @@ public void onMessage(Room room, JsonNode message, Member member) {
 }
 ```
 
+## Reconnecting
+The currect version of the Java library doesn't reconnect automatically after a possible disconnect. This feature will be added in the future.
+To handle reconnection you can listen to the `onFailure` event.
+```java
+@Override
+public void onFailure(Exception ex) {
+    tryReconnecting(0);
+}
+
+private void tryReconnecting(final int reconnectAttempt) {
+    Timer timer = new Timer();
+    timer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+            final Scaledrone drone = new Scaledrone("channel-id");
+            drone.connect(new Listener() {
+                @Override
+                public void onFailure(Exception ex) {
+                    tryReconnecting(reconnectAttempt + 1);
+                }
+            });
+            // set everything up again..
+        }
+    }, reconnectAttempt * 1000);
+}
+```
+
 ## Troubleshooting
 ```
 PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
