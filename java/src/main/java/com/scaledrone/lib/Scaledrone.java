@@ -19,6 +19,7 @@ interface CallbackHandler {
 }
 
 public class Scaledrone extends WebSocketListener {
+    private static final int NORMAL_CLOSURE_STATUS = 1000;
     private String channelID;
     private String clientID;
     private Object data;
@@ -179,6 +180,10 @@ public class Scaledrone extends WebSocketListener {
             }
         }));
         this.sendMessage(authenticate);
+    }
+
+    public void close() {
+        this.ws.close(NORMAL_CLOSURE_STATUS, "");
     }
 
     private Integer registerCallback(CallbackHandler handler) {
