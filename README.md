@@ -24,7 +24,7 @@ repositories {
 <dependency>
   <groupId>com.scaledrone</groupId>
   <artifactId>scaledrone-java</artifactId>
-  <version>0.4.0</version>
+  <version>0.5.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -32,7 +32,7 @@ repositories {
 ### Gradle
 
 ```
-compile 'com.scaledrone:scaledrone-java:0.4.0'
+compile 'com.scaledrone:scaledrone-java:0.5.0'
 ```
 
 ## Android
@@ -265,5 +265,6 @@ This likely means that your Java doesn't support Let's Encrypt Certificates. Upg
 
 ## Changelog
 
-* `0.4.0` - Hooked up `onFailure` listener. This can be used for reconnecting.
+* `0.5.0` - Add up `close()` method.
+* `0.4.0` - Hook up `onFailure` listener. This can be used for reconnecting.
 * `0.3.0` - Add `member` parameter to `onMessage` listener method.
