@@ -70,6 +70,7 @@ public class Scaledrone extends WebSocketListener {
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); //omit "null" properties
             String json = mapper.writeValueAsString(data);
             this.ws.send(json);
+            System.out.println("Sending:   " + json);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -81,6 +82,7 @@ public class Scaledrone extends WebSocketListener {
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
+        System.out.println("Receiving: " + text);
         ObjectMapper mapper = new ObjectMapper();
         try {
             GenericCallback cb = mapper.readValue(text, GenericCallback.class);
