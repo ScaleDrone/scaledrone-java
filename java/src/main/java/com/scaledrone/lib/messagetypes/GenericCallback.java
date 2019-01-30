@@ -10,12 +10,16 @@ public class GenericCallback {
     private String type;
     private Integer callback;
     private String error;
+
     // message specific fields
+    private String ID; // message ID
+    private long timestamp; // unix timestamp of when the message was sent
     @JsonProperty("client_id")
-    private String clientID;
-    private String room;
-    private JsonNode message;
+    private String clientID; // the ID of the client who sent the message
+    private String room; // the room to which the message was sent
+    private JsonNode message; // the data content of the message
     private JsonNode data; // JSON object or array of objects
+    private int index; // index of the message in history
 
     public String getType() {
         return type;
@@ -43,6 +47,18 @@ public class GenericCallback {
 
     public JsonNode getData() {
         return data;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     @Override
