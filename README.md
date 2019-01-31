@@ -24,7 +24,7 @@ repositories {
 <dependency>
   <groupId>com.scaledrone</groupId>
   <artifactId>scaledrone-java</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -32,7 +32,7 @@ repositories {
 ### Gradle
 
 ```
-compile 'com.scaledrone:scaledrone-java:0.5.0'
+compile 'com.scaledrone:scaledrone-java:0.6.0'
 ```
 
 ## Android
@@ -64,8 +64,8 @@ drone.connect(new Listener() {
             }
 
             @Override
-            public void onMessage(Room room, JsonNode message, Member member) {
-                System.out.println("Message: " + message.asText());
+            public void onMessage(Room room, Message message) {
+                System.out.println("Message: " + message.getData().asText());
             }
         });
     }
@@ -107,14 +107,14 @@ A received message is of type `JsonNode`. Jackson `JsonNode` can easily be trans
 ```java
 drone.subscribe("myroom", new RoomListener() {
     @Override
-    public void onMessage(Room room, JsonNode message, Member member) {
+    public void onMessage(Room room, Message message) {
         // parse as string
-        System.out.println("Message: " + message.asText());
+        System.out.println("Message: " + message.getData().asText());
 
         // or parse as POJO
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Pojo pojo = mapper.treeToValue(message, Pojo.class);
+            Pojo pojo = mapper.treeToValue(message.getData(), Pojo.class);
             System.out.println("Message: " + pojo);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -207,13 +207,37 @@ drone.connect(new Listener() {
     }
 ```
 
+## Message history
+
+When creating a Scaledrone room you can supply the number of messages to recieve from that room's history. The messages will arrive, in reverse chronological order and one by one, in `scaledroneRoomDidReceiveMessage`, just like real-time messages.
+
+Pass the `SubscribeOptions` as the second parameter to the `subscribe` method to define how many messages you would like to receive.
+
+You can then listen to the history messages using `room.listenToHistoryEvents()`.
+
+In order to recieve message history messages, this feature needs to be enabled in the [Scaledrone dashboard](http://dashboard.scaledrone.com). You can learn more about Message History and its limitations in [Scaledrone docs](https://www.scaledrone.com/docs/message-history).
+
+```java
+
+Room room = drone.subscribe(roomName, new RoomListener() {
+    // implement the default RoomListener methods here
+}, new SubscribeOptions(50)); // ask for 50 messages from the history
+
+room.listenToHistoryEvents(new HistoryRoomListener() {
+    @Override
+    public void onHistoryMessage(Room room, Message message) {
+        System.out.println('Received a message from the past ' + message.getData().asText());
+    }
+});
+```
+
 ## Checking if the messages was sent by the user itself
 
 ```java
 // inside a room listener
 @Override
-public void onMessage(Room room, JsonNode message, Member member) {
-    if (member.getClientID() == scaledrone.getClientID) {
+public void onMessage(Room room, Message message) {
+    if (message.getClientID() == scaledrone.getClientID()) {
         // message is sent by session user
     }
 }
@@ -265,6 +289,7 @@ This likely means that your Java doesn't support Let's Encrypt Certificates. Upg
 
 ## Changelog
 
+* `0.6.0` - Added message history features. Created a `Message` class that wraps the sent data, member as well as new properties such as message ID, timestamp and clientID.
 * `0.5.0` - Add up `close()` method.
 * `0.4.0` - Hook up `onFailure` listener. This can be used for reconnecting.
 * `0.3.0` - Add `member` parameter to `onMessage` listener method.
