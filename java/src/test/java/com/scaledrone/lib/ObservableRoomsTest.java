@@ -35,11 +35,11 @@ public class ObservableRoomsTest {
                     }
 
                     @Override
-                    public void onMessage(Room room, JsonNode message, Member member) {
-                        waiter.assertEquals(drone.getClientID(), member.getId());
+                    public void onMessage(Room room, Message message) {
+                        waiter.assertEquals(drone.getClientID(), message.getMember().getId());
                         ObjectMapper mapper = new ObjectMapper();
                         try {
-                            Data d = mapper.treeToValue(member.getClientData(), Data.class);
+                            Data d = mapper.treeToValue(message.getMember().getClientData(), Data.class);
                             waiter.assertEquals(data, d);
                             waiter.resume();
                         } catch (JsonProcessingException e) {
@@ -157,7 +157,7 @@ public class ObservableRoomsTest {
                     }
 
                     @Override
-                    public void onMessage(Room room, JsonNode message, Member member) {
+                    public void onMessage(Room room, Message message) {
 
                     }
                 });

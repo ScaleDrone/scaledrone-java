@@ -1,5 +1,6 @@
 package com.scaledrone.lib;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -66,6 +67,7 @@ public class Scaledrone extends WebSocketListener {
     private void sendMessage(Object data) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); //omit "null" properties
             String json = mapper.writeValueAsString(data);
             this.ws.send(json);
         } catch (JsonProcessingException e) {
@@ -95,14 +97,12 @@ public class Scaledrone extends WebSocketListener {
             } else {
                 final Room room = this.roomsMap.get(cb.getRoom());
                 Member member;
+                Message message;
                 switch (cb.getType()) {
                     case "publish":
                         member = room.getMembers().get(cb.getClientID());
-                        if (member == null) {
-                            member = new Member();
-                            member.setId(cb.getClientID());
-                        }
-                        room.getListener().onMessage(room, cb.getMessage(), member);
+                        message = new Message(cb.getID(), cb.getMessage(), cb.getTimestamp(), cb.getClientID(), member);
+                        room.getListener().onMessage(room, message);
                         break;
                     case "observable_members":
                         ArrayList<Member> members = mapper.readValue(
@@ -130,6 +130,13 @@ public class Scaledrone extends WebSocketListener {
                             room.getObservableListener().onMemberLeave(room, member);
                         }
                         break;
+                    case "history_message":
+                        member = room.getMembers().get(cb.getClientID());
+                        message = new Message(cb.getID(), cb.getMessage(), cb.getTimestamp(), cb.getClientID(), member);
+                        if (room.getHistoryListener() != null) {
+                            room.handleHistoryMessage(message, cb.getIndex());
+                        }
+                        break;
                 }
             }
         } catch (IOException e) {
@@ -138,8 +145,12 @@ public class Scaledrone extends WebSocketListener {
     }
 
     public Room subscribe(String roomName, final RoomListener roomListener) {
-        final Room room = new Room(roomName, roomListener, this);
-        Subscribe subscribe = new Subscribe(roomName, this.registerCallback(new CallbackHandler() {
+        return subscribe(roomName, roomListener, new SubscribeOptions(null));
+    }
+
+    public Room subscribe(String roomName, final RoomListener roomListener, SubscribeOptions options) {
+        final Room room = new Room(roomName, roomListener,this, options);
+        Subscribe subscribe = new Subscribe(roomName, options.getHistoryCount(), this.registerCallback(new CallbackHandler() {
             @Override
             public void handleCallback(GenericCallback cb) {
                 roomListener.onOpen(room);

@@ -1,7 +1,6 @@
 package com.scaledrone.lib;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jodah.concurrentunit.Waiter;
 import org.junit.Test;
@@ -29,9 +28,9 @@ public class MessagingTest {
                     }
 
                     @Override
-                    public void onMessage(Room room, JsonNode message, Member member) {
-                        waiter.assertEquals("Hello there", message.asText());
-                        waiter.assertEquals(drone.getClientID(), member.getId());
+                    public void onMessage(Room room, Message message) {
+                        waiter.assertEquals("Hello there", message.getData().asText());
+                        waiter.assertEquals(drone.getClientID(), message.getClientID());
                         waiter.resume();
                     }
                 });
@@ -76,10 +75,10 @@ public class MessagingTest {
                     }
 
                     @Override
-                    public void onMessage(Room room, JsonNode message, Member member) {
+                    public void onMessage(Room room, Message message) {
                         ObjectMapper mapper = new ObjectMapper();
                         try {
-                            waiter.assertEquals(data, mapper.treeToValue(message, Data.class));
+                            waiter.assertEquals(data, mapper.treeToValue(message.getData(), Data.class));
                             waiter.resume();
                         } catch (JsonProcessingException e) {
                             e.printStackTrace();
