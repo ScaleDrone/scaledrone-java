@@ -4,4 +4,4 @@ jdk:
   - oraclejdk8
 script:
   - ./gradlew assemble
-  - ./gradlew test
+  - ./gradlew test --stacktrace
