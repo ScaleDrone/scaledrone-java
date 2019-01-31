@@ -13,8 +13,6 @@ public class Room {
     private Map<String, Member> members = new HashMap<String, Member>();
     private Scaledrone scaledrone;
 
-    private SubscribeOptions options;
-    private int historyReceivedCount;
     private int historyNextIndex;
     private Message[] historyReceivedMessages;
 
@@ -22,8 +20,7 @@ public class Room {
         this.name = name;
         this.listener = listener;
         this.scaledrone = drone;
-        this.options = options;
-        if (options.getHistoryCount() > 0) {
+        if (options.getHistoryCount() != null && options.getHistoryCount() > 0) {
             this.historyReceivedMessages = new Message[options.getHistoryCount()];
         }
     }

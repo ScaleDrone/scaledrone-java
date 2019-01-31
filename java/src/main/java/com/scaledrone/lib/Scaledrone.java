@@ -1,5 +1,6 @@
 package com.scaledrone.lib;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -66,9 +67,9 @@ public class Scaledrone extends WebSocketListener {
     private void sendMessage(Object data) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); //omit "null" properties
             String json = mapper.writeValueAsString(data);
             this.ws.send(json);
-            System.out.println("Sending:   " + json);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -80,7 +81,6 @@ public class Scaledrone extends WebSocketListener {
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
-        System.out.println("Receiving: " + text);
         ObjectMapper mapper = new ObjectMapper();
         try {
             GenericCallback cb = mapper.readValue(text, GenericCallback.class);

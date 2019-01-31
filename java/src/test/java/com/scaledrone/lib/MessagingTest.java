@@ -30,7 +30,7 @@ public class MessagingTest {
                     @Override
                     public void onMessage(Room room, Message message) {
                         waiter.assertEquals("Hello there", message.getData().asText());
-                        waiter.assertEquals(drone.getClientID(), message.getMember().getId());
+                        waiter.assertEquals(drone.getClientID(), message.getClientID());
                         waiter.resume();
                     }
                 });
