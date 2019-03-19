@@ -45,8 +45,8 @@ public class HistoryTest {
                     room.listenToHistoryEvents(new HistoryRoomListener() {
                         @Override
                         public void onHistoryMessage(Room room, Message message) {
-                            waiter.assertEquals(messages.get(messages.size() - 1), message.getData().asText());
-                            messages.remove(messages.size() - 1);
+                            waiter.assertEquals(messages.get(0), message.getData().asText());
+                            messages.remove(0);
                             if (messages.isEmpty()) {
                                 waiter.resume();
                             }
