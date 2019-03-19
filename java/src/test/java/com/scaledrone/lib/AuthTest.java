@@ -162,7 +162,7 @@ public class AuthTest {
 
         final Map<String, ScaledronePermission> permissionMap = new HashMap<String, ScaledronePermission>() {
             {
-                put("*.", new ScaledronePermission(true, true));
+                put("^*.$", new ScaledronePermission(true, true));
                 put("^main-room$", new ScaledronePermission(false, false));
             }
         };
