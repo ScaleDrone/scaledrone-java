@@ -10,7 +10,7 @@ This project goes hand to hand with [Scaledrone documentation](https://www.scale
 
 [ ![Download](https://api.bintray.com/packages/scaledrone/scaledrone/scaledrone-java/images/download.svg) ](https://bintray.com/scaledrone/scaledrone/scaledrone-java/_latestVersion)
 
-The library is hosted on the [Jcenter repository](https://bintray.com/ably-io/ably), so you need to ensure that the repo is referenced also; IDEs will typically include this by default:
+The library is hosted on the [Jcenter repository](https://bintray.com/scaledrone/scaledrone/scaledrone-java), so you need to ensure that the repo is referenced also; IDEs will typically include this by default:
 
 ```
 repositories {
