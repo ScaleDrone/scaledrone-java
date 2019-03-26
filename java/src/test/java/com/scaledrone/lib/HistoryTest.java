@@ -45,6 +45,9 @@ public class HistoryTest {
                     room.listenToHistoryEvents(new HistoryRoomListener() {
                         @Override
                         public void onHistoryMessage(Room room, Message message) {
+                            waiter.assertEquals(drone.getClientID(), message.getClientID());
+                            waiter.assertTrue(message.getID().length() > 0);
+                            waiter.assertTrue(message.getTimestamp() > 0);
                             waiter.assertEquals(messages.get(0), message.getData().asText());
                             messages.remove(0);
                             if (messages.isEmpty()) {

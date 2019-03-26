@@ -36,4 +36,15 @@ public class Message {
     public Member getMember() {
         return member;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "ID='" + ID + '\'' +
+                ", data=" + data +
+                ", timestamp=" + timestamp +
+                ", clientID='" + clientID + '\'' +
+                ", member=" + member +
+                '}';
+    }
 }

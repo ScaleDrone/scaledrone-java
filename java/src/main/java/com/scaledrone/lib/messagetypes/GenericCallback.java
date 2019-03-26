@@ -12,6 +12,7 @@ public class GenericCallback {
     private String error;
 
     // message specific fields
+    @JsonProperty("id")
     private String ID; // message ID
     private long timestamp; // unix timestamp of when the message was sent
     @JsonProperty("client_id")
@@ -67,10 +68,13 @@ public class GenericCallback {
                 "type='" + type + '\'' +
                 ", callback=" + callback +
                 ", error='" + error + '\'' +
+                ", ID='" + ID + '\'' +
+                ", timestamp=" + timestamp +
                 ", clientID='" + clientID + '\'' +
                 ", room='" + room + '\'' +
                 ", message=" + message +
                 ", data=" + data +
+                ", index=" + index +
                 '}';
     }
 }
